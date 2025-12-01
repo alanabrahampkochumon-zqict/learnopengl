@@ -2,6 +2,22 @@
 #include <glfw/glfw3.h>
 #include <iostream>
 
+const GLchar* VERTEX_SOURCE = "#version 330 core\n"
+							"layout(location = 0) in vec3 position;\n"
+							"\n"
+							"void main()\n"
+							"{\n"
+							"	gl_Position = vec4(position.xyz, 1.0);\n"
+							"}\0";
+
+const GLchar* FRAGMENT_SHADER = "#version 330 core\n"
+								"layout(location = 0) out vec4 fragColor;\n"
+								"\n"
+								"void main()\n"
+								"{\n"
+								"	fragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);"
+								"}\0";
+
 // Handles window resizing
 static void framebufferSizeCallback(GLFWwindow *window, int width, int height)
 {
@@ -48,6 +64,66 @@ int main()
 	// Set viewport dimensions
 	glViewport(0, 0, 800, 600);
 	glfwSetFramebufferSizeCallback(window, framebufferSizeCallback); // Handle Resizing
+
+
+	// Vertex Data
+	float vertices[] = {
+		-0.5f, -0.5f, 0.0f,
+		 0.5f, -0.5f, 0.0f,
+		 0.0f,  0.5f, 0.0f
+	};
+
+	// VBO
+	GLuint vertexBufferID;
+	glGenBuffers(1, &vertexBufferID);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	// Vertex Shader
+	const GLuint vertexShader =	glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexShader, 1, &VERTEX_SOURCE, nullptr);
+	glCompileShader(vertexShader);
+
+	// Checking for compilation errors
+	int success;
+	char infoLog[512];
+	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+
+	if (!success)
+	{
+		glGetShaderInfoLog(vertexShader, 512, nullptr, infoLog);
+		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << "\n";
+	}
+
+
+	// Fragment Shader
+	const GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShader, 1, &FRAGMENT_SHADER, nullptr);
+	glCompileShader(fragmentShader);
+
+	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+	if (!success)
+	{
+		glGetShaderInfoLog(fragmentShader, 512, nullptr, infoLog);
+		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION FAILED\n" << infoLog << "\n";
+	}
+
+	// Create Program
+	const GLuint program = glCreateProgram();
+	glAttachShader(program, vertexShader);
+	glAttachShader(program, fragmentShader);
+	glLinkProgram(program);
+	// Program Error Checking
+	glGetProgramiv(program, GL_LINK_STATUS, &success);
+	if (!success)
+	{
+		glGetProgramInfoLog(program, 512, nullptr, infoLog);
+		std::cout << "ERROR::PROGRAM::LINKING FAILED\n" << infoLog << "\n";
+	}
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float), nullptr);
+	glEnableVertexAttribArray(0);
+
 
 	// Window Loop
 	while (!glfwWindowShouldClose(window))
