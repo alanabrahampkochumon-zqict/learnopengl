@@ -67,7 +67,23 @@ int main()
 
 
 	// Wireframe Mode
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Enable this to draw in wireframe
+	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Enable this to draw in wireframe
+
+	// Exercise
+	float vertex2[] = {
+		 0.5f, -0.5f, 0.0f,
+		 0.0f,  0.5f, 0.0f,
+	 	 0.0f, -0.5f, 0.0f,
+
+		 0.0f, -0.5f, 0.0f,
+		 0.0f,  0.5f, 0.0f,
+		-0.5f, -0.5f, 0.0f
+	};
+
+	GLuint vertexArrayObject2;
+	glGenBuffers(1, &vertexArrayObject2);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexArrayObject2);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex2), vertex2, GL_STATIC_DRAW);
 
 	// Vertex Data
 	float vertices[] = {
@@ -140,6 +156,7 @@ int main()
 		std::cout << "ERROR::PROGRAM::LINKING FAILED\n" << infoLog << "\n";
 	}
 
+	glBindBuffer(GL_ARRAY_BUFFER, vertexArrayObject2);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, nullptr);
 	glEnableVertexAttribArray(0);
 
@@ -155,7 +172,8 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 		glUseProgram(program);
 		glBindVertexArray(vertexArrayObject);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
 
 		glfwSwapBuffers(window);
