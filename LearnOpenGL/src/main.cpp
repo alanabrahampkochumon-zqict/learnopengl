@@ -16,9 +16,10 @@ const GLchar* FRAGMENT_SHADER = "#version 330 core\n"
 								"layout(location = 0) out vec4 fragColor;\n"
 								"\n"
 								"in vec4 vertexColor;\n"
+								"uniform vec4 ourColor;\n"
 								"void main()\n"
 								"{\n"
-								"	fragColor = vertexColor;"
+								"	fragColor = ourColor;"
 								"}\0";
 
 
@@ -154,6 +155,9 @@ int main()
 
 	glUseProgram(program);
 
+	// Color Uniform
+	GLuint colorUniformLocation = glGetUniformLocation(program, "ourColor");
+
 	// Window Loop
 	while (!glfwWindowShouldClose(window))
 	{
@@ -162,10 +166,18 @@ int main()
 		// Rendering calls
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // Change clear color
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		// Animating Color
+		float timeValue = glfwGetTime();
+		float green = (sin(timeValue) / 2.0f) + 0.5f;
+
 		glUseProgram(program);
+
+		glUniform4f(colorUniformLocation, 0.0f, green, 0.0f, 1.0f);
+
 		glBindVertexArray(vertexArrayObject);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-
+		
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
