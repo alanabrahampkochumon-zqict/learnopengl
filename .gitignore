@@ -43,3 +43,4 @@
 # Visual Studio Files
 *.vsdix
 .vs/
+.db
