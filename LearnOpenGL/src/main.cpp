@@ -18,6 +18,15 @@ const GLchar* FRAGMENT_SHADER = "#version 330 core\n"
 								"	fragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);"
 								"}\0";
 
+const GLchar* FRAGMENT_SHADER2 = "#version 330 core\n"
+								"\n"
+								"layout(location = 0) out vec4 fragColor;\n"
+								"\n"
+								"void main()\n"
+								"{\n"
+								"    fragColor = vec4(1.0f, 1.0f, 0.0f, 1.0f);"
+								"}\0";
+
 // Handles window resizing
 static void framebufferSizeCallback(GLFWwindow *window, int width, int height)
 {
@@ -93,6 +102,43 @@ int main()
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 	glEnableVertexAttribArray(0);
+
+	GLuint fragmentShader2 = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShader2, 1, &FRAGMENT_SHADER2, nullptr);
+	glCompileShader(fragmentShader2);
+
+	// Error Handling
+	char errorLog[512];
+	int compilationSuccess;
+	glGetShaderiv(fragmentShader2, GL_COMPILE_STATUS, &compilationSuccess);
+	if (!compilationSuccess)
+	{
+		glGetShaderInfoLog(fragmentShader2, 512, nullptr, errorLog);
+		std::cout << "[ERROR:FRAGMENT_SHADER_2] " << errorLog << "\n";
+	}
+
+	GLuint vertexShader2 = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexShader2, 1, &VERTEX_SOURCE, nullptr);
+	glCompileShader(vertexShader2);
+	glGetShaderiv(vertexShader2, GL_COMPILE_STATUS, &compilationSuccess);
+
+	if (!compilationSuccess)
+	{
+		glGetShaderInfoLog(vertexShader2, 512, nullptr, errorLog);
+		std::cout << "[ERROR:VERTEX_SHADER_2] " << errorLog << "\n";
+	}
+
+	GLuint program2 = glCreateProgram();
+	glAttachShader(program2, vertexShader2);
+	glAttachShader(program2, fragmentShader2);
+	glLinkProgram(program2);
+	glGetProgramiv(program2, GL_LINK_STATUS, &compilationSuccess);
+
+	if (!compilationSuccess)
+	{
+		glGetProgramInfoLog(program2, 512, nullptr, errorLog);
+		std::cout << "[ERROR:PROGRAM2] " << errorLog << "\n";
+	}
 
 	// Vertex Data
 	float vertices[] = {
@@ -178,7 +224,7 @@ int main()
 		// Rendering calls
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // Change clear color
 		glClear(GL_COLOR_BUFFER_BIT);
-		glUseProgram(program);
+		glUseProgram(program2);
 		glBindVertexArray(vertexArrayObject2);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
