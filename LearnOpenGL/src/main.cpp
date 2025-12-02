@@ -66,18 +66,37 @@ int main()
 	glfwSetFramebufferSizeCallback(window, framebufferSizeCallback); // Handle Resizing
 
 
+	// Wireframe Mode
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Enable this to draw in wireframe
+
 	// Vertex Data
 	float vertices[] = {
-		-0.5f, -0.5f, 0.0f,
+		 0.5f,  0.5f, 0.0f,
 		 0.5f, -0.5f, 0.0f,
-		 0.0f,  0.5f, 0.0f
+		-0.5f, -0.5f, 0.0f,
+		-0.5f,  0.5f, 0.0f
 	};
+
+	unsigned int indices[] = {
+		0, 1, 3, // First Triangle
+		1, 2, 3  // Second Triangle
+	};
+
+	GLuint vertexArrayObject;
+	glGenVertexArrays(1, &vertexArrayObject);
+	glBindVertexArray(vertexArrayObject);
 
 	// VBO
 	GLuint vertexBufferID;
 	glGenBuffers(1, &vertexBufferID);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	// Element Buffer Object
+	GLuint elementBufferObject;
+	glGenBuffers(1, &elementBufferObject);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferObject);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// Vertex Shader
 	const GLuint vertexShader =	glCreateShader(GL_VERTEX_SHADER);
@@ -121,10 +140,6 @@ int main()
 		std::cout << "ERROR::PROGRAM::LINKING FAILED\n" << infoLog << "\n";
 	}
 
-	GLuint vertexArrayObject;
-	glGenVertexArrays(1, &vertexArrayObject);
-	glBindVertexArray(vertexArrayObject);
-
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, nullptr);
 	glEnableVertexAttribArray(0);
 
@@ -140,7 +155,7 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 		glUseProgram(program);
 		glBindVertexArray(vertexArrayObject);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
 
 		glfwSwapBuffers(window);
