@@ -5,6 +5,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{308CBC76-CBCA-4DB2-92D1-16A68F36DC3A}|LearnOpenGL\\LearnOpenGL.vcxproj|H:\\Graphics Programming\\LearnOpenGL\\LearnOpenGL\\src\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{308CBC76-CBCA-4DB2-92D1-16A68F36DC3A}|LearnOpenGL\\LearnOpenGL.vcxproj|solutionrelative:LearnOpenGL\\src\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{308CBC76-CBCA-4DB2-92D1-16A68F36DC3A}|LearnOpenGL\\LearnOpenGL.vcxproj|H:\\Graphics Programming\\LearnOpenGL\\LearnOpenGL\\src\\backups\\main_ex2.3_complete.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{308CBC76-CBCA-4DB2-92D1-16A68F36DC3A}|LearnOpenGL\\LearnOpenGL.vcxproj|solutionrelative:LearnOpenGL\\src\\backups\\main_ex2.3_complete.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,13 +30,26 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "main_ex2.3_complete.cpp",
+              "DocumentMoniker": "H:\\Graphics Programming\\LearnOpenGL\\LearnOpenGL\\src\\backups\\main_ex2.3_complete.cpp",
+              "RelativeDocumentMoniker": "LearnOpenGL\\src\\backups\\main_ex2.3_complete.cpp",
+              "ToolTip": "H:\\Graphics Programming\\LearnOpenGL\\LearnOpenGL\\src\\backups\\main_ex2.3_complete.cpp",
+              "RelativeToolTip": "LearnOpenGL\\src\\backups\\main_ex2.3_complete.cpp",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAAAUAAABpAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-12-02T11:53:52.756Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "main.cpp",
               "DocumentMoniker": "H:\\Graphics Programming\\LearnOpenGL\\LearnOpenGL\\src\\main.cpp",
               "RelativeDocumentMoniker": "LearnOpenGL\\src\\main.cpp",
-              "ToolTip": "H:\\Graphics Programming\\LearnOpenGL\\LearnOpenGL\\src\\main.cpp*",
-              "RelativeToolTip": "LearnOpenGL\\src\\main.cpp*",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAUwCUAAAABAAAAAAAAAA==",
+              "ToolTip": "H:\\Graphics Programming\\LearnOpenGL\\LearnOpenGL\\src\\main.cpp",
+              "RelativeToolTip": "LearnOpenGL\\src\\main.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2025-12-01T12:06:58.21Z",
               "EditorCaption": ""

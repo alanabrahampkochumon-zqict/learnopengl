@@ -5,27 +5,22 @@
 const GLchar* VERTEX_SOURCE = "#version 330 core\n"
 							"layout(location = 0) in vec3 position;\n"
 							"\n"
+							"out vec4 vertexColor;\n"
 							"void main()\n"
 							"{\n"
 							"	gl_Position = vec4(position.xyz, 1.0);\n"
+							"    vertexColor = vec4(0.5f, 0.0, 0.0, 1.0);\n"
 							"}\0";
 
 const GLchar* FRAGMENT_SHADER = "#version 330 core\n"
 								"layout(location = 0) out vec4 fragColor;\n"
 								"\n"
+								"in vec4 vertexColor;\n"
 								"void main()\n"
 								"{\n"
-								"	fragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);"
+								"	fragColor = vertexColor;"
 								"}\0";
 
-const GLchar* FRAGMENT_SHADER2 = "#version 330 core\n"
-								"\n"
-								"layout(location = 0) out vec4 fragColor;\n"
-								"\n"
-								"void main()\n"
-								"{\n"
-								"    fragColor = vec4(1.0f, 1.0f, 0.0f, 1.0f);"
-								"}\0";
 
 // Handles window resizing
 static void framebufferSizeCallback(GLFWwindow *window, int width, int height)
@@ -75,70 +70,13 @@ int main()
 	glfwSetFramebufferSizeCallback(window, framebufferSizeCallback); // Handle Resizing
 
 
+	// Query Vertex Attribute
+	int nAttributes;
+	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nAttributes);
+	std::cout << "Maximum Vertex Attributes supported: " << nAttributes << "\n";
+
 	// Wireframe Mode
 	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // Enable this to draw in wireframe
-
-	// Exercise
-	float vertex2[] = {
-		 0.5f, -0.5f, 0.0f,
-		 0.0f,  0.5f, 0.0f,
-	 	 0.0f, -0.5f, 0.0f,
-
-		 0.0f, -0.5f, 0.0f,
-		 0.0f,  0.5f, 0.0f,
-		-0.5f, -0.5f, 0.0f
-	};
-
-	// VAO
-	GLuint vertexArrayObject2;
-	glGenVertexArrays(1, &vertexArrayObject2);
-	glBindVertexArray(vertexArrayObject2);
-
-	// VBO
-	GLuint vertexBufferObject2;
-	glGenBuffers(1, &vertexBufferObject2);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject2);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex2), vertex2, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
-	glEnableVertexAttribArray(0);
-
-	GLuint fragmentShader2 = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader2, 1, &FRAGMENT_SHADER2, nullptr);
-	glCompileShader(fragmentShader2);
-
-	// Error Handling
-	char errorLog[512];
-	int compilationSuccess;
-	glGetShaderiv(fragmentShader2, GL_COMPILE_STATUS, &compilationSuccess);
-	if (!compilationSuccess)
-	{
-		glGetShaderInfoLog(fragmentShader2, 512, nullptr, errorLog);
-		std::cout << "[ERROR:FRAGMENT_SHADER_2] " << errorLog << "\n";
-	}
-
-	GLuint vertexShader2 = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader2, 1, &VERTEX_SOURCE, nullptr);
-	glCompileShader(vertexShader2);
-	glGetShaderiv(vertexShader2, GL_COMPILE_STATUS, &compilationSuccess);
-
-	if (!compilationSuccess)
-	{
-		glGetShaderInfoLog(vertexShader2, 512, nullptr, errorLog);
-		std::cout << "[ERROR:VERTEX_SHADER_2] " << errorLog << "\n";
-	}
-
-	GLuint program2 = glCreateProgram();
-	glAttachShader(program2, vertexShader2);
-	glAttachShader(program2, fragmentShader2);
-	glLinkProgram(program2);
-	glGetProgramiv(program2, GL_LINK_STATUS, &compilationSuccess);
-
-	if (!compilationSuccess)
-	{
-		glGetProgramInfoLog(program2, 512, nullptr, errorLog);
-		std::cout << "[ERROR:PROGRAM2] " << errorLog << "\n";
-	}
 
 	// Vertex Data
 	float vertices[] = {
@@ -224,10 +162,9 @@ int main()
 		// Rendering calls
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // Change clear color
 		glClear(GL_COLOR_BUFFER_BIT);
-		glUseProgram(program2);
-		glBindVertexArray(vertexArrayObject2);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-		// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+		glUseProgram(program);
+		glBindVertexArray(vertexArrayObject);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
 
 		glfwSwapBuffers(window);
