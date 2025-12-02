@@ -121,9 +121,14 @@ int main()
 		std::cout << "ERROR::PROGRAM::LINKING FAILED\n" << infoLog << "\n";
 	}
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float), nullptr);
+	GLuint vertexArrayObject;
+	glGenVertexArrays(1, &vertexArrayObject);
+	glBindVertexArray(vertexArrayObject);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, nullptr);
 	glEnableVertexAttribArray(0);
 
+	glUseProgram(program);
 
 	// Window Loop
 	while (!glfwWindowShouldClose(window))
@@ -133,6 +138,9 @@ int main()
 		// Rendering calls
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // Change clear color
 		glClear(GL_COLOR_BUFFER_BIT);
+		glUseProgram(program);
+		glBindVertexArray(vertexArrayObject);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 
 		glfwSwapBuffers(window);
